@@ -7,6 +7,8 @@ ABSTRACT
 REQUIREMENTS
     *   PDL >= v2.4.2
 
+        Tested version(s) 2.4.2, 2.4.3, 2.4.7_001, 2.4.9_015.
+
     *   PDL::VectorValued >= v0.03
 
 DESCRIPTION
