@@ -13,7 +13,7 @@ use DynaLoader;
 
 
 
-   $PDL::CCS::Ops::VERSION = 1.16;
+   $PDL::CCS::Ops::VERSION = 1.17;
    @ISA    = ( 'PDL::Exporter','DynaLoader' );
    push @PDL::Core::PP, __PACKAGE__;
    bootstrap PDL::CCS::Ops $VERSION;
