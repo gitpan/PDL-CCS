@@ -10,7 +10,10 @@ WriteMakefile(
 	      NAME   =>'PDL::CCS',
 	      AUTHOR => 'Bryan Jurish',
 	      ABSTRACT =>'Sparse N-dimensional PDLs with compressed column storage',
+	      ##
 	      VERSION_FROM => 'CCS/Version.pm',
+	      #VERSION => '1.17_001',
+	      ##
 	      #PM => { (map {$_=>"\$(INST_LIBDIR)/CCS/$_"} <*.pm>), },
 	      DIR =>[
 		     'CCS',
@@ -18,6 +21,6 @@ WriteMakefile(
 	      realclean=>{ FILES=>$realclean_files, },
 	      PREREQ_PM => {
 			    'PDL' => '2.4.2',
-			    'PDL::VectorValued' => undef, #0.04
+			    'PDL::VectorValued' => '0.06', #0.06
 			   },
 	     );
