@@ -13,7 +13,7 @@ use DynaLoader;
 
 
 
-   $PDL::CCS::Utils::VERSION = 1.18.1;
+   $PDL::CCS::Utils::VERSION = 1.19.0;
    @ISA    = ( 'PDL::Exporter','DynaLoader' );
    push @PDL::Core::PP, __PACKAGE__;
    bootstrap PDL::CCS::Utils $VERSION;
@@ -22,7 +22,7 @@ use DynaLoader;
 
 
 
-#use PDL::CCS::Version;
+#use PDL::CCS::Config;
 use strict;
 
 =pod
@@ -54,6 +54,9 @@ PDL::CCS::Utils - Low-level utilities for compressed storage sparse PDLs
 =cut
 
 
+
+
+*ccs_indx = \&PDL::indx; ##-- typecasting for CCS indices
 
 
 
@@ -146,7 +149,7 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 
 =for sig
 
-  Signature: (int ix(Nnz); int N(); int [o]ptr(Nplus1); int [o]ixix(Nnz))
+  Signature: (indx ix(Nnz); indx N(); indx [o]ptr(Nplus1); indx [o]ixix(Nnz))
 
 General CCS encoding utility.
 
@@ -182,8 +185,8 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
    my ($ix,$N,$ptr,$ixix) = @_;
    barf("Usage: ccs_encode_pointers(ix(Nnz), N(), [o]ptr(N), [o]ixix(Nnz)") if (!defined($ix));
    $N    = $ix->max()+1                               if (!defined($N));
-   $ptr = PDL->zeroes(PDL::long(), $N+1)              if (!defined($ptr));
-   $ixix = PDL->zeroes(PDL::long(), $ix->dim(0))      if (!defined($ixix));
+   $ptr = PDL->zeroes(ccs_indx(), $N+1)              if (!defined($ptr));
+   $ixix = PDL->zeroes(ccs_indx(), $ix->dim(0))      if (!defined($ixix));
    &PDL::_ccs_encode_pointers_int($ix,$N,$ptr,$ixix);
    return ($ptr,$ixix);
  }
@@ -208,7 +211,7 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 
 =for sig
 
-  Signature: (int ptr(Nplus1); int proj(Nproj); int [o]projix(NnzProj); int [o]nzix(NnzProj))
+  Signature: (indx ptr(Nplus1); indx proj(Nproj); indx [o]projix(NnzProj); indx [o]nzix(NnzProj))
 
 General CCS decoding utility.
 
@@ -237,14 +240,14 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
      if (!defined($ptr));
    my ($nnzproj);
    if (!defined($proj)) {
-     $proj    = PDL->sequence(PDL::long(), $ptr->dim(0)-1);
+     $proj    = PDL->sequence(ccs_indx(), $ptr->dim(0)-1);
      $nnzproj = $ptr->at(-1);
    }
    if (!defined($projix) || !defined($nzix)) {
      $nnzproj = ($ptr->index($proj+1)-$ptr->index($proj))->sum if (!defined($nnzproj));
      return (null,null) if (!$nnzproj);
-     $projix  = PDL->zeroes(PDL::long(), $nnzproj) if (!defined($projix));
-     $nzix    = PDL->zeroes(PDL::long(), $nnzproj) if (!defined($nzix));
+     $projix  = PDL->zeroes(ccs_indx(), $nnzproj) if (!defined($projix));
+     $nzix    = PDL->zeroes(ccs_indx(), $nnzproj) if (!defined($nzix));
    }
    &PDL::_ccs_decode_pointer_int($ptr,$proj,$projix,$nzix);
    return ($projix,$nzix);
@@ -261,7 +264,7 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 
 =for sig
 
-  Signature: (int which(Ndims,Nnz); SV *HANDLE; char *fmt; char *fsep; char *rsep)
+  Signature: (indx which(Ndims,Nnz); SV *HANDLE; char *fmt; char *fsep; char *rsep)
 
 
 Print a text dump of an index PDL to the filehandle C<HANDLE>, which default to C<STDUT>.
@@ -328,7 +331,7 @@ Bryan Jurish E<lt>moocow@cpan.orgE<gt>
 
 =head2 Copyright Policy
 
-Copyright (C) 2007, Bryan Jurish. All rights reserved.
+Copyright (C) 2007-2013, Bryan Jurish. All rights reserved.
 
 This package is free software, and entirely without warranty.
 You may redistribute it and/or modify it under the same terms

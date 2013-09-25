@@ -13,7 +13,7 @@ use DynaLoader;
 
 
 
-   $PDL::CCS::Ufunc::VERSION = 1.18.1;
+   $PDL::CCS::Ufunc::VERSION = 1.19.0;
    @ISA    = ( 'PDL::Exporter','DynaLoader' );
    push @PDL::Core::PP, __PACKAGE__;
    bootstrap PDL::CCS::Ufunc $VERSION;
@@ -56,6 +56,9 @@ PDL::CCS::Ufunc - Ufuncs for compressed storage sparse PDLs
 
 
 
+*ccs_indx = \&PDL::indx; ##-- typecasting for CCS indices
+
+
 
 
 =head2 ccs_accum_prod
@@ -63,13 +66,13 @@ PDL::CCS::Ufunc - Ufuncs for compressed storage sparse PDLs
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
        [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -118,13 +121,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
    }
    @nnzOut = $nzvalsOut->dims if (!@nnzOut && defined($nzvalsOut) && !$nzvalsOut->isempty);
    @nnzOut = @nnzIn           if (!@nnzOut);
-   $ixOut  = PDL->zeroes(PDL::long(), $ndims,@nnzOut)
+   $ixOut  = PDL->zeroes(ccs_indx(), $ndims,@nnzOut)
      if (!defined($ixOut)      || $ixOut->isempty);
 
    $nzvalsOut = PDL->zeroes($nzvalsIn->type, @nnzOut)
      if (!defined($nzvalsOut) || $nzvalsOut->isempty);
 
-   $nOut = PDL->pdl(PDL::long(),0)                  if (!defined($nOut) || $nOut->isempty);
+   $nOut = PDL->pdl(ccs_indx(),0)                  if (!defined($nOut) || $nOut->isempty);
    ##
    ##-- guts
    &PDL::_ccs_accum_prod_int($ixIn,$nzvalsIn, $missing,$N, $ixOut,$nzvalsOut,$nOut);
@@ -149,13 +152,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
     double [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -204,13 +207,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
    }
    @nnzOut = $nzvalsOut->dims if (!@nnzOut && defined($nzvalsOut) && !$nzvalsOut->isempty);
    @nnzOut = @nnzIn           if (!@nnzOut);
-   $ixOut  = PDL->zeroes(PDL::long(), $ndims,@nnzOut)
+   $ixOut  = PDL->zeroes(ccs_indx(), $ndims,@nnzOut)
      if (!defined($ixOut)      || $ixOut->isempty);
 
    $nzvalsOut = PDL->zeroes(PDL::double(), @nnzOut)
      if (!defined($nzvalsOut) || $nzvalsOut->isempty);
 
-   $nOut = PDL->pdl(PDL::long(),0)                  if (!defined($nOut) || $nOut->isempty);
+   $nOut = PDL->pdl(ccs_indx(),0)                  if (!defined($nOut) || $nOut->isempty);
    ##
    ##-- guts
    &PDL::_ccs_accum_dprod_int($ixIn,$nzvalsIn, $missing,$N, $ixOut,$nzvalsOut,$nOut);
@@ -235,13 +238,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
        [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -290,13 +293,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
    }
    @nnzOut = $nzvalsOut->dims if (!@nnzOut && defined($nzvalsOut) && !$nzvalsOut->isempty);
    @nnzOut = @nnzIn           if (!@nnzOut);
-   $ixOut  = PDL->zeroes(PDL::long(), $ndims,@nnzOut)
+   $ixOut  = PDL->zeroes(ccs_indx(), $ndims,@nnzOut)
      if (!defined($ixOut)      || $ixOut->isempty);
 
    $nzvalsOut = PDL->zeroes($nzvalsIn->type, @nnzOut)
      if (!defined($nzvalsOut) || $nzvalsOut->isempty);
 
-   $nOut = PDL->pdl(PDL::long(),0)                  if (!defined($nOut) || $nOut->isempty);
+   $nOut = PDL->pdl(ccs_indx(),0)                  if (!defined($nOut) || $nOut->isempty);
    ##
    ##-- guts
    &PDL::_ccs_accum_sum_int($ixIn,$nzvalsIn, $missing,$N, $ixOut,$nzvalsOut,$nOut);
@@ -321,13 +324,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
     double [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -376,13 +379,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
    }
    @nnzOut = $nzvalsOut->dims if (!@nnzOut && defined($nzvalsOut) && !$nzvalsOut->isempty);
    @nnzOut = @nnzIn           if (!@nnzOut);
-   $ixOut  = PDL->zeroes(PDL::long(), $ndims,@nnzOut)
+   $ixOut  = PDL->zeroes(ccs_indx(), $ndims,@nnzOut)
      if (!defined($ixOut)      || $ixOut->isempty);
 
    $nzvalsOut = PDL->zeroes(PDL::double(), @nnzOut)
      if (!defined($nzvalsOut) || $nzvalsOut->isempty);
 
-   $nOut = PDL->pdl(PDL::long(),0)                  if (!defined($nOut) || $nOut->isempty);
+   $nOut = PDL->pdl(ccs_indx(),0)                  if (!defined($nOut) || $nOut->isempty);
    ##
    ##-- guts
    &PDL::_ccs_accum_dsum_int($ixIn,$nzvalsIn, $missing,$N, $ixOut,$nzvalsOut,$nOut);
@@ -407,13 +410,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
        [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -459,13 +462,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
    }
    @nnzOut = $nzvalsOut->dims if (!@nnzOut && defined($nzvalsOut) && !$nzvalsOut->isempty);
    @nnzOut = @nnzIn           if (!@nnzOut);
-   $ixOut  = PDL->zeroes(PDL::long(), $ndims,@nnzOut)
+   $ixOut  = PDL->zeroes(ccs_indx(), $ndims,@nnzOut)
      if (!defined($ixOut)      || $ixOut->isempty);
 
    $nzvalsOut = PDL->zeroes($nzvalsIn->type, @nnzOut)
      if (!defined($nzvalsOut) || $nzvalsOut->isempty);
 
-   $nOut = PDL->pdl(PDL::long(),0)                  if (!defined($nOut) || $nOut->isempty);
+   $nOut = PDL->pdl(ccs_indx(),0)                  if (!defined($nOut) || $nOut->isempty);
    ##
    ##-- guts
    &PDL::_ccs_accum_or_int($ixIn,$nzvalsIn, $missing,$N, $ixOut,$nzvalsOut,$nOut);
@@ -490,13 +493,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
        [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -542,13 +545,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
    }
    @nnzOut = $nzvalsOut->dims if (!@nnzOut && defined($nzvalsOut) && !$nzvalsOut->isempty);
    @nnzOut = @nnzIn           if (!@nnzOut);
-   $ixOut  = PDL->zeroes(PDL::long(), $ndims,@nnzOut)
+   $ixOut  = PDL->zeroes(ccs_indx(), $ndims,@nnzOut)
      if (!defined($ixOut)      || $ixOut->isempty);
 
    $nzvalsOut = PDL->zeroes($nzvalsIn->type, @nnzOut)
      if (!defined($nzvalsOut) || $nzvalsOut->isempty);
 
-   $nOut = PDL->pdl(PDL::long(),0)                  if (!defined($nOut) || $nOut->isempty);
+   $nOut = PDL->pdl(ccs_indx(),0)                  if (!defined($nOut) || $nOut->isempty);
    ##
    ##-- guts
    &PDL::_ccs_accum_and_int($ixIn,$nzvalsIn, $missing,$N, $ixOut,$nzvalsOut,$nOut);
@@ -573,13 +576,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
        [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -625,13 +628,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
    }
    @nnzOut = $nzvalsOut->dims if (!@nnzOut && defined($nzvalsOut) && !$nzvalsOut->isempty);
    @nnzOut = @nnzIn           if (!@nnzOut);
-   $ixOut  = PDL->zeroes(PDL::long(), $ndims,@nnzOut)
+   $ixOut  = PDL->zeroes(ccs_indx(), $ndims,@nnzOut)
      if (!defined($ixOut)      || $ixOut->isempty);
 
-   $nzvalsOut = PDL->zeroes(($nzvalsIn->type > PDL::long() ? PDL::long() : $nzvalsIn->type), @nnzOut)
+   $nzvalsOut = PDL->zeroes(($nzvalsIn->type > ccs_indx() ? ccs_indx() : $nzvalsIn->type), @nnzOut)
      if (!defined($nzvalsOut) || $nzvalsOut->isempty);
 
-   $nOut = PDL->pdl(PDL::long(),0)                  if (!defined($nOut) || $nOut->isempty);
+   $nOut = PDL->pdl(ccs_indx(),0)                  if (!defined($nOut) || $nOut->isempty);
    ##
    ##-- guts
    &PDL::_ccs_accum_bor_int($ixIn,$nzvalsIn, $missing,$N, $ixOut,$nzvalsOut,$nOut);
@@ -656,13 +659,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
        [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -708,13 +711,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
    }
    @nnzOut = $nzvalsOut->dims if (!@nnzOut && defined($nzvalsOut) && !$nzvalsOut->isempty);
    @nnzOut = @nnzIn           if (!@nnzOut);
-   $ixOut  = PDL->zeroes(PDL::long(), $ndims,@nnzOut)
+   $ixOut  = PDL->zeroes(ccs_indx(), $ndims,@nnzOut)
      if (!defined($ixOut)      || $ixOut->isempty);
 
-   $nzvalsOut = PDL->zeroes(($nzvalsIn->type > PDL::long() ? PDL::long() : $nzvalsIn->type), @nnzOut)
+   $nzvalsOut = PDL->zeroes(($nzvalsIn->type > ccs_indx() ? ccs_indx() : $nzvalsIn->type), @nnzOut)
      if (!defined($nzvalsOut) || $nzvalsOut->isempty);
 
-   $nOut = PDL->pdl(PDL::long(),0)                  if (!defined($nOut) || $nOut->isempty);
+   $nOut = PDL->pdl(ccs_indx(),0)                  if (!defined($nOut) || $nOut->isempty);
    ##
    ##-- guts
    &PDL::_ccs_accum_band_int($ixIn,$nzvalsIn, $missing,$N, $ixOut,$nzvalsOut,$nOut);
@@ -739,13 +742,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
        [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -792,13 +795,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
    }
    @nnzOut = $nzvalsOut->dims if (!@nnzOut && defined($nzvalsOut) && !$nzvalsOut->isempty);
    @nnzOut = @nnzIn           if (!@nnzOut);
-   $ixOut  = PDL->zeroes(PDL::long(), $ndims,@nnzOut)
+   $ixOut  = PDL->zeroes(ccs_indx(), $ndims,@nnzOut)
      if (!defined($ixOut)      || $ixOut->isempty);
 
    $nzvalsOut = PDL->zeroes($nzvalsIn->type, @nnzOut)
      if (!defined($nzvalsOut) || $nzvalsOut->isempty);
 
-   $nOut = PDL->pdl(PDL::long(),0)                  if (!defined($nOut) || $nOut->isempty);
+   $nOut = PDL->pdl(ccs_indx(),0)                  if (!defined($nOut) || $nOut->isempty);
    ##
    ##-- guts
    &PDL::_ccs_accum_maximum_int($ixIn,$nzvalsIn, $missing,$N, $ixOut,$nzvalsOut,$nOut);
@@ -823,13 +826,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
        [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -876,13 +879,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
    }
    @nnzOut = $nzvalsOut->dims if (!@nnzOut && defined($nzvalsOut) && !$nzvalsOut->isempty);
    @nnzOut = @nnzIn           if (!@nnzOut);
-   $ixOut  = PDL->zeroes(PDL::long(), $ndims,@nnzOut)
+   $ixOut  = PDL->zeroes(ccs_indx(), $ndims,@nnzOut)
      if (!defined($ixOut)      || $ixOut->isempty);
 
    $nzvalsOut = PDL->zeroes($nzvalsIn->type, @nnzOut)
      if (!defined($nzvalsOut) || $nzvalsOut->isempty);
 
-   $nOut = PDL->pdl(PDL::long(),0)                  if (!defined($nOut) || $nOut->isempty);
+   $nOut = PDL->pdl(ccs_indx(),0)                  if (!defined($nOut) || $nOut->isempty);
    ##
    ##-- guts
    &PDL::_ccs_accum_minimum_int($ixIn,$nzvalsIn, $missing,$N, $ixOut,$nzvalsOut,$nOut);
@@ -907,13 +910,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
-    int [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
+    indx [o]nzvalsOut(NnzOut);
+    indx [o]nOut();
     )
 
 
@@ -957,13 +960,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
    }
    @nnzOut = $nzvalsOut->dims if (!@nnzOut && defined($nzvalsOut) && !$nzvalsOut->isempty);
    @nnzOut = @nnzIn           if (!@nnzOut);
-   $ixOut  = PDL->zeroes(PDL::long(), $ndims,@nnzOut)
+   $ixOut  = PDL->zeroes(ccs_indx(), $ndims,@nnzOut)
      if (!defined($ixOut)      || $ixOut->isempty);
 
    $nzvalsOut = PDL->zeroes($nzvalsIn->type, @nnzOut)
      if (!defined($nzvalsOut) || $nzvalsOut->isempty);
 
-   $nOut = PDL->pdl(PDL::long(),0)                  if (!defined($nOut) || $nOut->isempty);
+   $nOut = PDL->pdl(ccs_indx(),0)                  if (!defined($nOut) || $nOut->isempty);
    ##
    ##-- guts
    &PDL::_ccs_accum_maximum_nz_ind_int($ixIn,$nzvalsIn, $missing,$N, $ixOut,$nzvalsOut,$nOut);
@@ -988,13 +991,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
-    int [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
+    indx [o]nzvalsOut(NnzOut);
+    indx [o]nOut();
     )
 
 
@@ -1038,13 +1041,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
    }
    @nnzOut = $nzvalsOut->dims if (!@nnzOut && defined($nzvalsOut) && !$nzvalsOut->isempty);
    @nnzOut = @nnzIn           if (!@nnzOut);
-   $ixOut  = PDL->zeroes(PDL::long(), $ndims,@nnzOut)
+   $ixOut  = PDL->zeroes(ccs_indx(), $ndims,@nnzOut)
      if (!defined($ixOut)      || $ixOut->isempty);
 
    $nzvalsOut = PDL->zeroes($nzvalsIn->type, @nnzOut)
      if (!defined($nzvalsOut) || $nzvalsOut->isempty);
 
-   $nOut = PDL->pdl(PDL::long(),0)                  if (!defined($nOut) || $nOut->isempty);
+   $nOut = PDL->pdl(ccs_indx(),0)                  if (!defined($nOut) || $nOut->isempty);
    ##
    ##-- guts
    &PDL::_ccs_accum_minimum_nz_ind_int($ixIn,$nzvalsIn, $missing,$N, $ixOut,$nzvalsOut,$nOut);
@@ -1069,13 +1072,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
     int+ [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -1099,7 +1102,7 @@ In scalar context, returns only $nzvalsOut().
 
 =for bad
 
-ccs_accum_nbad does handle bad values.
+ccs_accum_nbad processes bad values.
 It will set the bad-value flag of all output piddles if the flag is set for any of the input piddles.
 
 
@@ -1119,13 +1122,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
    }
    @nnzOut = $nzvalsOut->dims if (!@nnzOut && defined($nzvalsOut) && !$nzvalsOut->isempty);
    @nnzOut = @nnzIn           if (!@nnzOut);
-   $ixOut  = PDL->zeroes(PDL::long(), $ndims,@nnzOut)
+   $ixOut  = PDL->zeroes(ccs_indx(), $ndims,@nnzOut)
      if (!defined($ixOut)      || $ixOut->isempty);
 
    $nzvalsOut = PDL->zeroes($nzvalsIn->type, @nnzOut)
      if (!defined($nzvalsOut) || $nzvalsOut->isempty);
 
-   $nOut = PDL->pdl(PDL::long(),0)                  if (!defined($nOut) || $nOut->isempty);
+   $nOut = PDL->pdl(ccs_indx(),0)                  if (!defined($nOut) || $nOut->isempty);
    ##
    ##-- guts
    &PDL::_ccs_accum_nbad_int($ixIn,$nzvalsIn, $missing,$N, $ixOut,$nzvalsOut,$nOut);
@@ -1150,13 +1153,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
     int+ [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -1180,7 +1183,7 @@ In scalar context, returns only $nzvalsOut().
 
 =for bad
 
-ccs_accum_ngood does handle bad values.
+ccs_accum_ngood processes bad values.
 It will set the bad-value flag of all output piddles if the flag is set for any of the input piddles.
 
 
@@ -1200,13 +1203,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
    }
    @nnzOut = $nzvalsOut->dims if (!@nnzOut && defined($nzvalsOut) && !$nzvalsOut->isempty);
    @nnzOut = @nnzIn           if (!@nnzOut);
-   $ixOut  = PDL->zeroes(PDL::long(), $ndims,@nnzOut)
+   $ixOut  = PDL->zeroes(ccs_indx(), $ndims,@nnzOut)
      if (!defined($ixOut)      || $ixOut->isempty);
 
    $nzvalsOut = PDL->zeroes($nzvalsIn->type, @nnzOut)
      if (!defined($nzvalsOut) || $nzvalsOut->isempty);
 
-   $nOut = PDL->pdl(PDL::long(),0)                  if (!defined($nOut) || $nOut->isempty);
+   $nOut = PDL->pdl(ccs_indx(),0)                  if (!defined($nOut) || $nOut->isempty);
    ##
    ##-- guts
    &PDL::_ccs_accum_ngood_int($ixIn,$nzvalsIn, $missing,$N, $ixOut,$nzvalsOut,$nOut);
@@ -1231,13 +1234,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
     int+ [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -1281,13 +1284,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
    }
    @nnzOut = $nzvalsOut->dims if (!@nnzOut && defined($nzvalsOut) && !$nzvalsOut->isempty);
    @nnzOut = @nnzIn           if (!@nnzOut);
-   $ixOut  = PDL->zeroes(PDL::long(), $ndims,@nnzOut)
+   $ixOut  = PDL->zeroes(ccs_indx(), $ndims,@nnzOut)
      if (!defined($ixOut)      || $ixOut->isempty);
 
    $nzvalsOut = PDL->zeroes($nzvalsIn->type, @nnzOut)
      if (!defined($nzvalsOut) || $nzvalsOut->isempty);
 
-   $nOut = PDL->pdl(PDL::long(),0)                  if (!defined($nOut) || $nOut->isempty);
+   $nOut = PDL->pdl(ccs_indx(),0)                  if (!defined($nOut) || $nOut->isempty);
    ##
    ##-- guts
    &PDL::_ccs_accum_nnz_int($ixIn,$nzvalsIn, $missing,$N, $ixOut,$nzvalsOut,$nOut);
@@ -1312,13 +1315,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
     float+ [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -1367,13 +1370,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
    }
    @nnzOut = $nzvalsOut->dims if (!@nnzOut && defined($nzvalsOut) && !$nzvalsOut->isempty);
    @nnzOut = @nnzIn           if (!@nnzOut);
-   $ixOut  = PDL->zeroes(PDL::long(), $ndims,@nnzOut)
+   $ixOut  = PDL->zeroes(ccs_indx(), $ndims,@nnzOut)
      if (!defined($ixOut)      || $ixOut->isempty);
 
    $nzvalsOut = PDL->zeroes($nzvalsIn->type, @nnzOut)
      if (!defined($nzvalsOut) || $nzvalsOut->isempty);
 
-   $nOut = PDL->pdl(PDL::long(),0)                  if (!defined($nOut) || $nOut->isempty);
+   $nOut = PDL->pdl(ccs_indx(),0)                  if (!defined($nOut) || $nOut->isempty);
    ##
    ##-- guts
    &PDL::_ccs_accum_average_int($ixIn,$nzvalsIn, $missing,$N, $ixOut,$nzvalsOut,$nOut);
@@ -1451,7 +1454,7 @@ Bryan Jurish E<lt>moocow@cpan.orgE<gt>
 
 =head2 Copyright Policy
 
-Copyright (C) 2007, Bryan Jurish. All rights reserved.
+Copyright (C) 2007-2013, Bryan Jurish. All rights reserved.
 
 This package is free software, and entirely without warranty.
 You may redistribute it and/or modify it under the same terms

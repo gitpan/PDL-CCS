@@ -9,7 +9,7 @@ REQUIREMENTS
 
         Tested version(s) 2.4.2, 2.4.3, 2.4.7_001, 2.4.9_015.
 
-    *   PDL::VectorValued >= v0.03
+    *   PDL::VectorValued >= v0.07001
 
 DESCRIPTION
     PDL::CCS is a set of perl modules for representation and manipulation of
@@ -36,7 +36,7 @@ AUTHOR
     Bryan Jurish <moocow@cpan.org>
 
 COPYRIGHT
-    Copyright (c) 2005-2011 by Bryan Jurish. All rights reserved.
+    Copyright (c) 2005-2013 by Bryan Jurish. All rights reserved.
 
     This package is free software, and entirely without warranty. You may
     redistribute it and/or modify it under the same terms as Perl itself.

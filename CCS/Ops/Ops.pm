@@ -13,7 +13,7 @@ use DynaLoader;
 
 
 
-   $PDL::CCS::Ops::VERSION = 1.18.1;
+   $PDL::CCS::Ops::VERSION = 1.19.0;
    @ISA    = ( 'PDL::Exporter','DynaLoader' );
    push @PDL::Core::PP, __PACKAGE__;
    bootstrap PDL::CCS::Ops $VERSION;
@@ -56,6 +56,9 @@ PDL::CCS::Ops - Low-level binary operations for compressed storage sparse PDLs
 
 
 
+*ccs_indx = \&PDL::indx; ##-- typecasting for CCS indices
+
+
 
 
 =head2 ccs_binop_align_block_mia
@@ -63,8 +66,8 @@ PDL::CCS::Ops - Low-level binary operations for compressed storage sparse PDLs
 =for sig
 
   Signature: (
-    int ixa(Ndims,NnzA); int ixb(Ndims,NnzB); int    istate(State);
-    int [o]nzai(NnzC);   int [o]nzbi(NnzC);   int [o]ostate(State);
+    indx ixa(Ndims,NnzA); indx ixb(Ndims,NnzB); indx    istate(State);
+    indx [o]nzai(NnzC);   indx [o]nzbi(NnzC);   indx [o]ostate(State);
     )
 
 
@@ -166,7 +169,7 @@ Bryan Jurish E<lt>moocow@cpan.orgE<gt>
 
 =head2 Copyright Policy
 
-All other parts Copyright (C) 2007, Bryan Jurish. All rights reserved.
+All other parts Copyright (C) 2007-2013, Bryan Jurish. All rights reserved.
 
 This package is free software, and entirely without warranty.
 You may redistribute it and/or modify it under the same terms

@@ -2,6 +2,7 @@ ChangeLog
 MANIFEST
 MANIFEST.SKIP
 Makefile.PL
+Config.PL
 pdlmaker.plm
 README.txt
 README.rpod
@@ -9,6 +10,7 @@ CCS.pm
 CCS/Makefile.PL
 CCS/Functions.pm
 CCS/Compat.pm
+CCS/Config.pm
 CCS/Nd.pm
 CCS/Version.pm
 CCS/Ops/Makefile.PL

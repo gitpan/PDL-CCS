@@ -13,7 +13,7 @@ use DynaLoader;
 
 
 
-   $PDL::CCS::MatrixOps::VERSION = 1.18.1;
+   $PDL::CCS::MatrixOps::VERSION = 1.19.0;
    @ISA    = ( 'PDL::Exporter','DynaLoader' );
    push @PDL::Core::PP, __PACKAGE__;
    bootstrap PDL::CCS::MatrixOps $VERSION;
@@ -56,6 +56,9 @@ PDL::CCS::MatrixOps - Low-level matrix operations for compressed storage sparse 
 
 
 
+*ccs_indx = \&PDL::indx; ##-- typecasting for CCS indices
+
+
 
 
 =head2 ccs_matmult2d_sdd
@@ -63,7 +66,7 @@ PDL::CCS::MatrixOps - Low-level matrix operations for compressed storage sparse 
 =for sig
 
   Signature: (
-    int ixa(NdimsA,NnzA); nza(NnzA); missinga();
+    indx ixa(NdimsA,NnzA); nza(NnzA); missinga();
     b(O,M);
     zc(O);
     [o]c(O,N)
@@ -111,7 +114,7 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixa(Ndimsa,NnzA); nza(NnzA);
+    indx ixa(Ndimsa,NnzA); nza(NnzA);
     b(O,M);
     [o]c(O,N)
     )
@@ -178,7 +181,7 @@ Bryan Jurish E<lt>moocow@cpan.orgE<gt>
 
 =head2 Copyright Policy
 
-All other parts Copyright (C) 2009, Bryan Jurish. All rights reserved.
+All other parts Copyright (C) 2009-2013, Bryan Jurish. All rights reserved.
 
 This package is free software, and entirely without warranty.
 You may redistribute it and/or modify it under the same terms
