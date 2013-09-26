@@ -13,7 +13,7 @@ use DynaLoader;
 
 
 
-   $PDL::CCS::Utils::VERSION = 1.19.0;
+   $PDL::CCS::Utils::VERSION = 1.19.1;
    @ISA    = ( 'PDL::Exporter','DynaLoader' );
    push @PDL::Core::PP, __PACKAGE__;
    bootstrap PDL::CCS::Utils $VERSION;
@@ -56,7 +56,7 @@ PDL::CCS::Utils - Low-level utilities for compressed storage sparse PDLs
 
 
 
-*ccs_indx = \&PDL::indx; ##-- typecasting for CCS indices
+*ccs_indx = \&PDL::long; ##-- typecasting for CCS indices
 
 
 
@@ -149,7 +149,7 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 
 =for sig
 
-  Signature: (indx ix(Nnz); indx N(); indx [o]ptr(Nplus1); indx [o]ixix(Nnz))
+  Signature: (int ix(Nnz); int N(); int [o]ptr(Nplus1); int [o]ixix(Nnz))
 
 General CCS encoding utility.
 
@@ -211,7 +211,7 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 
 =for sig
 
-  Signature: (indx ptr(Nplus1); indx proj(Nproj); indx [o]projix(NnzProj); indx [o]nzix(NnzProj))
+  Signature: (int ptr(Nplus1); int proj(Nproj); int [o]projix(NnzProj); int [o]nzix(NnzProj))
 
 General CCS decoding utility.
 
@@ -264,7 +264,7 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 
 =for sig
 
-  Signature: (indx which(Ndims,Nnz); SV *HANDLE; char *fmt; char *fsep; char *rsep)
+  Signature: (int which(Ndims,Nnz); SV *HANDLE; char *fmt; char *fsep; char *rsep)
 
 
 Print a text dump of an index PDL to the filehandle C<HANDLE>, which default to C<STDUT>.
