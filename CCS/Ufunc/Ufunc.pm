@@ -13,7 +13,7 @@ use DynaLoader;
 
 
 
-   $PDL::CCS::Ufunc::VERSION = 1.19.1;
+   $PDL::CCS::Ufunc::VERSION = 1.20.1;
    @ISA    = ( 'PDL::Exporter','DynaLoader' );
    push @PDL::Core::PP, __PACKAGE__;
    bootstrap PDL::CCS::Ufunc $VERSION;
@@ -56,7 +56,7 @@ PDL::CCS::Ufunc - Ufuncs for compressed storage sparse PDLs
 
 
 
-*ccs_indx = \&PDL::long; ##-- typecasting for CCS indices
+*ccs_indx = \&PDL::indx; ##-- typecasting for CCS indices
 
 
 
@@ -66,13 +66,13 @@ PDL::CCS::Ufunc - Ufuncs for compressed storage sparse PDLs
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
        [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -152,13 +152,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
     double [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -238,13 +238,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
        [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -324,13 +324,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
     double [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -410,13 +410,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
        [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -493,13 +493,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
        [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -576,13 +576,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
        [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -659,13 +659,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
        [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -742,13 +742,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
        [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -826,13 +826,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
        [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -910,13 +910,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
-    int [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
+    indx [o]nzvalsOut(NnzOut);
+    indx [o]nOut();
     )
 
 
@@ -991,13 +991,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
-    int [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
+    indx [o]nzvalsOut(NnzOut);
+    indx [o]nOut();
     )
 
 
@@ -1072,13 +1072,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
     int+ [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -1102,7 +1102,7 @@ In scalar context, returns only $nzvalsOut().
 
 =for bad
 
-ccs_accum_nbad does handle bad values.
+ccs_accum_nbad processes bad values.
 It will set the bad-value flag of all output piddles if the flag is set for any of the input piddles.
 
 
@@ -1153,13 +1153,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
     int+ [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -1183,7 +1183,7 @@ In scalar context, returns only $nzvalsOut().
 
 =for bad
 
-ccs_accum_ngood does handle bad values.
+ccs_accum_ngood processes bad values.
 It will set the bad-value flag of all output piddles if the flag is set for any of the input piddles.
 
 
@@ -1234,13 +1234,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
     int+ [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 
@@ -1315,13 +1315,13 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixIn(Ndims,NnzIn);
+    indx ixIn(Ndims,NnzIn);
     nzvalsIn(NnzIn);
     missing();
-    int N();
-    int [o]ixOut(Ndims,NnzOut);
+    indx N();
+    indx [o]ixOut(Ndims,NnzOut);
     float+ [o]nzvalsOut(NnzOut);
-    int [o]nOut();
+    indx [o]nOut();
     )
 
 

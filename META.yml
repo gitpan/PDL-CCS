@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               PDL-CCS
-version:            1.19.1
+version:            1.20.1
 abstract:           Sparse N-dimensional PDLs with compressed column storage
 author:
     - Bryan Jurish

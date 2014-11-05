@@ -13,7 +13,7 @@ use DynaLoader;
 
 
 
-   $PDL::CCS::MatrixOps::VERSION = 1.19.1;
+   $PDL::CCS::MatrixOps::VERSION = 1.20.1;
    @ISA    = ( 'PDL::Exporter','DynaLoader' );
    push @PDL::Core::PP, __PACKAGE__;
    bootstrap PDL::CCS::MatrixOps $VERSION;
@@ -56,7 +56,7 @@ PDL::CCS::MatrixOps - Low-level matrix operations for compressed storage sparse 
 
 
 
-*ccs_indx = \&PDL::long; ##-- typecasting for CCS indices
+*ccs_indx = \&PDL::indx; ##-- typecasting for CCS indices
 
 
 
@@ -66,7 +66,7 @@ PDL::CCS::MatrixOps - Low-level matrix operations for compressed storage sparse 
 =for sig
 
   Signature: (
-    int ixa(NdimsA,NnzA); nza(NnzA); missinga();
+    indx ixa(NdimsA,NnzA); nza(NnzA); missinga();
     b(O,M);
     zc(O);
     [o]c(O,N)
@@ -114,7 +114,7 @@ It will set the bad-value flag of all output piddles if the flag is set for any 
 =for sig
 
   Signature: (
-    int ixa(Ndimsa,NnzA); nza(NnzA);
+    indx ixa(Ndimsa,NnzA); nza(NnzA);
     b(O,M);
     [o]c(O,N)
     )

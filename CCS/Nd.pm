@@ -253,7 +253,7 @@ sub appendWhich :lvalue {
 *PDL::toccs = \&toccs;
 sub toccs :lvalue {
   return $_[0] if (isa($_[0],__PACKAGE__));
-  return __PACKAGE__->newFromDense(@_)
+  return my $tmp=__PACKAGE__->newFromDense(@_);
 }
 
 ## $ccs = $ccs->copy()
@@ -313,7 +313,7 @@ sub shadow  :lvalue {
 ##  + recodes object, removing any missing values from $nzvals
 sub recode  :lvalue {
   my $ccs = shift;
-  my $nz = $ccs->[$VALS]->slice("0:-2");
+  my $nz = $ccs->_nzvals;
   my $z  = $ccs->[$VALS]->slice("-1");
 
   ##-- get mask of "real" non-zero values
@@ -402,7 +402,7 @@ sub decode  :lvalue {
 
 ## $dense = $ccs_or_dense->todense()
 *PDL::todense = \&todense;
-sub todense  :lvalue { isa($_[0],__PACKAGE__) ? $_[0]->decode(@_[1..$#_]) : $_[0]; }
+sub todense  :lvalue { isa($_[0],__PACKAGE__) ? (my $tmp=$_[0]->decode(@_[1..$#_])) : $_[0]; }
 
 ##--------------------------------------------------------------
 ## PDL API: Basic Properties
@@ -418,7 +418,7 @@ sub convert  :lvalue {
     $_[0][$FLAGS] &= ~$CCSND_INPLACE;
     return $_[0];
   }
-  $_[0]->shadow(which=>$_[0][$WHICH]->pdl, vals=>$_[0][$VALS]->convert($_[1]));
+  return my $tmp=$_[0]->shadow(which=>$_[0][$WHICH]->pdl, vals=>$_[0][$VALS]->convert($_[1]));
 }
 
 ## byte,short,ushort,long,double,...
@@ -1011,16 +1011,16 @@ sub average_nz  :lvalue {
 #  return ($ccs->sumover + (-$ccs->nnz+$ccs->dim(0))*$missing) / $ccs->dim(0);
 #}
 
-sub sum   { my $z=$_[0]->missing; $_[0][$VALS]->slice("0:-2")->sum   + ($z->isgood ? ($z->sclr *  $_[0]->nmissing) : 0); }
-sub dsum  { my $z=$_[0]->missing; $_[0][$VALS]->slice("0:-2")->dsum  + ($z->isgood ? ($z->sclr *  $_[0]->nmissing) : 0); }
-sub prod  { my $z=$_[0]->missing; $_[0][$VALS]->slice("0:-2")->prod  * ($z->isgood ? ($z->sclr ** $_[0]->nmissing) : 1); }
-sub dprod { my $z=$_[0]->missing; $_[0][$VALS]->slice("0:-2")->dprod * ($z->isgood ? ($z->sclr ** $_[0]->nmissing) : 1); }
+sub sum   { my $z=$_[0]->missing; $_[0]->_nzvals->sum  + ($z->isgood ? ($z->sclr *  $_[0]->nmissing) : 0); }
+sub dsum  { my $z=$_[0]->missing; $_[0]->_nzvals->dsum + ($z->isgood ? ($z->sclr *  $_[0]->nmissing) : 0); }
+sub prod  { my $z=$_[0]->missing; $_[0]->_nzvals->prod  * ($z->isgood ? ($z->sclr ** $_[0]->nmissing) : 1); }
+sub dprod { my $z=$_[0]->missing; $_[0]->_nzvals->dprod * ($z->isgood ? ($z->sclr ** $_[0]->nmissing) : 1); }
 sub min   { $_[0][$VALS]->min; }
 sub max   { $_[0][$VALS]->max; }
 sub minmax { $_[0][$VALS]->minmax; }
 
-sub nbad  { my $z=$_[0]->missing; $_[0][$VALS]->slice("0:-2")->nbad   + ($z->isbad  ? $_[0]->nmissing : 0); }
-sub ngood { my $z=$_[0]->missing; $_[0][$VALS]->slice("0:-2")->ngood  + ($z->isgood ? $_[0]->nmissing : 0); }
+sub nbad  { my $z=$_[0]->missing; $_[0]->_nzvals->nbad   + ($z->isbad  ? $_[0]->nmissing : 0); }
+sub ngood { my $z=$_[0]->missing; $_[0]->_nzvals->ngood  + ($z->isgood ? $_[0]->nmissing : 0); }
 
 sub any { $_[0][$VALS]->any; }
 sub all { $_[0][$VALS]->all; }
@@ -1028,9 +1028,9 @@ sub all { $_[0][$VALS]->all; }
 
 sub avg   {
   my $z=$_[0]->missing;
-  return ($_[0][$VALS]->slice("0:-2")->sum + ($_[0]->nelem-$_[0]->_nnz)*$z->sclr) / $_[0]->nelem;
+  return ($_[0]->_nzvals->sum + ($_[0]->nelem-$_[0]->_nnz)*$z->sclr) / $_[0]->nelem;
 }
-sub avg_nz   { $_[0][$VALS]->slice("0:-2")->avg; }
+sub avg_nz   { $_[0]->_nzvals->avg; }
 
 sub isbad {
   my ($a,$out) = @_;
@@ -1247,12 +1247,12 @@ sub _ccsnd_binop_align_dims {
 }
 
 ##-- OLD (but still used)
-## \&code = _ccsnd_binary_op_mia($opName, \&pdlSub, $defType)
+## \&code = _ccsnd_binary_op_mia($opName, \&pdlSub, $defType, $noSwap)
 ##  + returns code for wrapping a builtin PDL binary operation \&pdlSub under the name "$opName"
 ##  + $opName is just used for error reporting
 ##  + $defType (if specified) is the default output type of the operation (e.g. PDL::long())
 sub _ccsnd_binary_op_mia {
-  my ($opname,$pdlsub,$deftype) = @_;
+  my ($opname,$pdlsub,$deftype,$noSwap) = @_;
 
   return sub :lvalue {
     my ($a,$b,$swap) = @_;
@@ -1262,13 +1262,13 @@ sub _ccsnd_binary_op_mia {
     ##-- check for & dispatch scalar operations
     if (!ref($b) || $b->nelem==1) {
       if ($a->is_inplace) {
-	$pdlsub->($a->[$VALS]->inplace, todense($b), $swap);
+	$pdlsub->($a->[$VALS]->inplace, todense($b), ($noSwap ? qw() : $swap));
 	$a->set_inplace(0);
 	return $tmp=$a->recode;
       }
       return $tmp=$a->shadow(
 			     which => $a->[$WHICH]->pdl,
-			     vals  => $pdlsub->($a->[$VALS], todense($b), $swap),
+			     vals  => $pdlsub->($a->[$VALS], todense($b), ($noSwap ? qw() : $swap))
 			    )->recode;
     }
 
@@ -1343,7 +1343,7 @@ sub _ccsnd_binary_op_mia {
 			     $blksz);
     my $ixc    = PDL->zeroes($P_INDX, $pdimsc->nelem, $blksz);
     my $nnzc   = 0;
-    my $zc     = $pdlsub->($avals->slice("-1"), $bvals->slice("-1"), $swap)->convert($nzc->type);
+    my $zc     = $pdlsub->($avals->slice("-1"), $bvals->slice("-1"), ($noSwap ? qw() : $swap))->convert($nzc->type);
     my $nanismissing = ($a->[$FLAGS]&$CCSND_NAN_IS_MISSING);
     my $badismissing = ($a->[$FLAGS]&$CCSND_BAD_IS_MISSING);
     $zc              = $zc->setnantobad() if ($nanismissing && $badismissing);
@@ -1370,7 +1370,7 @@ sub _ccsnd_binary_op_mia {
 	$blk_slice = "${nzci_prv}:${nzci_max}";
 	$nzai_blk  = $nzai->slice($blk_slice);
 	$nzbi_blk  = $nzbi->slice($blk_slice);
-	$nzc_blk   = $pdlsub->($avalsr->index($nzai_blk), $bvalsr->index($nzbi_blk), $swap);
+	$nzc_blk   = $pdlsub->($avalsr->index($nzai_blk), $bvalsr->index($nzbi_blk), ($noSwap ? qw() : $swap));
 
 	##-- get indices of non-$missing c() values
 	$cimask_blk   = $zc_isbad || $nzc_blk->badflag ? $nzc_blk->isgood : ($nzc_blk!=$zc);
@@ -1605,7 +1605,7 @@ foreach my $binop (
     eval "*${binop} = *${binop}_mia = _ccsnd_binary_op_mia('${binop}',PDL->can('${binop}'));";
   }
 
-*pow = *pow_mia = _ccsnd_binary_op_mia('power',PDL->can('pow'));
+*pow = *pow_mia = _ccsnd_binary_op_mia('power',PDL->can('pow'),undef,1);
 
 ##-- integer-only operations
 foreach my $intop (

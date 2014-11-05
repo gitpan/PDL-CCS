@@ -13,7 +13,7 @@ use DynaLoader;
 
 
 
-   $PDL::CCS::Ops::VERSION = 1.19.1;
+   $PDL::CCS::Ops::VERSION = 1.20.1;
    @ISA    = ( 'PDL::Exporter','DynaLoader' );
    push @PDL::Core::PP, __PACKAGE__;
    bootstrap PDL::CCS::Ops $VERSION;
@@ -56,7 +56,7 @@ PDL::CCS::Ops - Low-level binary operations for compressed storage sparse PDLs
 
 
 
-*ccs_indx = \&PDL::long; ##-- typecasting for CCS indices
+*ccs_indx = \&PDL::indx; ##-- typecasting for CCS indices
 
 
 
@@ -66,8 +66,8 @@ PDL::CCS::Ops - Low-level binary operations for compressed storage sparse PDLs
 =for sig
 
   Signature: (
-    int ixa(Ndims,NnzA); int ixb(Ndims,NnzB); int    istate(State);
-    int [o]nzai(NnzC);   int [o]nzbi(NnzC);   int [o]ostate(State);
+    indx ixa(Ndims,NnzA); indx ixb(Ndims,NnzB); indx    istate(State);
+    indx [o]nzai(NnzC);   indx [o]nzbi(NnzC);   indx [o]ostate(State);
     )
 
 
